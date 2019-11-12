@@ -169,3 +169,94 @@
        $rentedroom = $sth->fetchAll();
        return $this->response->withJson($rentedroom);
    });
+
+   $app->get('/showroom/[{rentedroom_name}]', function ($request, $response, $args) {
+    $sth = $this->db->prepare("SELECT * FROM rentedroom WHERE rentedroom_name LIKE :rentedroom_name ORDER BY rentedroom_name");
+  $query = "%".$args['rentedroom_name']."%";
+  $sth->bindParam("rentedroom_name", $query);
+  $sth->execute();
+  $showroom = $sth->fetchAll();
+  return $this->response->withJson($showroom);
+});
+
+$app->get('/room/[{rentedroom_name}]', function ($request, $response, $args) {
+    $sth = $this->db->prepare("SELECT * FROM rentedroom ");
+  $query = "%".$args['rentedroom_name']."%";
+  $sth->bindParam("rentedroom_name", $query);
+  $sth->execute();
+  $room = $sth->fetchAll();
+  return $this->response->withJson($room);
+});
+
+
+$app->get('/room3000', function ($request, $response, $args) {
+    $sth = $this->db->prepare("SELECT 
+	rentedroom.rentedroom_id,
+	rentedroom.rentedroom_name,
+	rentedroom.rentedroom_address,
+	rentedroom.price,
+	rentedroom.facilities,
+    rentedroom.namepic,
+	type.type_name,
+	rentedroom.restrict_gender,
+	rentedroom.rentedroom_phone
+FROM rentedroom, type, picture 
+WHERE rentedroom.type_id = type.type_id  AND rentedroom.rentedroom_id = picture.rentedroom_id AND rentedroom.price < 3000;");
+   $sth->execute();
+   $room3000 = $sth->fetchAll();
+   return $this->response->withJson($room3000);
+});
+
+$app->get('/room3001', function ($request, $response, $args) {
+    $sth = $this->db->prepare("SELECT 
+	rentedroom.rentedroom_id,
+	rentedroom.rentedroom_name,
+	rentedroom.rentedroom_address,
+	rentedroom.price,
+	rentedroom.facilities,
+    rentedroom.namepic,
+	type.type_name,
+	rentedroom.restrict_gender,
+	rentedroom.rentedroom_phone
+FROM rentedroom, type, picture 
+WHERE rentedroom.type_id = type.type_id  AND rentedroom.rentedroom_id = picture.rentedroom_id AND rentedroom.price BETWEEN '3000%' AND '4000%';");
+   $sth->execute();
+   $room3001 = $sth->fetchAll();
+   return $this->response->withJson($room3001);
+});
+
+$app->get('/room4000', function ($request, $response, $args) {
+    $sth = $this->db->prepare("SELECT 
+	rentedroom.rentedroom_id,
+	rentedroom.rentedroom_name,
+	rentedroom.rentedroom_address,
+	rentedroom.price,
+	rentedroom.facilities,
+    rentedroom.namepic,
+	type.type_name,
+	rentedroom.restrict_gender,
+	rentedroom.rentedroom_phone
+FROM rentedroom, type, picture 
+WHERE rentedroom.type_id = type.type_id  AND rentedroom.rentedroom_id = picture.rentedroom_id AND rentedroom.price > 4000;");
+   $sth->execute();
+   $room4000 = $sth->fetchAll();
+   return $this->response->withJson($room4000);
+});
+
+$app->get('/room', function ($request, $response, $args) {
+    $sth = $this->db->prepare("SELECT 
+	rentedroom.rentedroom_id,
+	rentedroom.rentedroom_name,
+	rentedroom.rentedroom_address,
+	rentedroom.price,
+	rentedroom.facilities,
+    rentedroom.namepic,
+	type.type_name,
+	rentedroom.restrict_gender,
+	rentedroom.rentedroom_phone
+FROM rentedroom, type, picture 
+WHERE rentedroom.type_id = type.type_id  AND rentedroom.rentedroom_id = picture.rentedroom_id ");
+   $sth->execute();
+   $room = $sth->fetchAll();
+   return $this->response->withJson($room);
+});
